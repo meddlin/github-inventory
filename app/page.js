@@ -1,20 +1,20 @@
 "use client";
 import { useState, useEffect } from 'react';
 
+const callAPI = async () => {
+  const res = await fetch('https://localhost:32786/api/GitHub/GitHub');
+  const data = await res.json();
+  if (res.status !== 200) throw Error(body.message);
+  
+  return data;
+};
+
 export default function Home() {
-
-  const callAPI = async () => {
-    const res = await fetch('https://localhost:32786/api/GitHub/GitHub');
-    const data = await res.json();
-    if (res.status !== 200) throw Error(body.message);
-    
-    setTableData(data);
-  };
-
   const [tableData, setTableData] = useState([]);
-  useEffect(() => {
-    callAPI();
-  }, [tableData]);
+  useEffect(async () => {
+    const data = await callAPI();
+    setTableData(data);
+  }, []);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
@@ -40,7 +40,7 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {tableData ? tableData.map(
+          {tableData && tableData.length > 0 ? tableData.map(
             (item, index) => {
               return (
                 <tr key={index}>
