@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 
 const callAPI = async () => {
-  const res = await fetch('https://localhost:32786/api/GitHub/GitHub');
+  const res = await fetch('https://localhost:32770/api/GitHub/GitHub');
   const data = await res.json();
   if (res.status !== 200) throw Error(body.message);
   
@@ -11,17 +11,21 @@ const callAPI = async () => {
 
 export default function Home() {
   const [tableData, setTableData] = useState([]);
+
+
   useEffect(async () => {
     const data = await callAPI();
     setTableData(data);
   }, []);
+  
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <main className="flex items-center justify-center">
       {/* <button onClick={callAPI}>Call API</button> */}
       
-      <h1 className="text-2xl font-bold text-center">GitHub Inventory</h1>
-      <table className="min-w-full divide-y divide-gray-300">
+      {/* <h1 className="text-2xl font-bold text-center">GitHub Inventory</h1> */}
+      
+      <table className="divide-y divide-gray-300">
         <thead>
           <tr>
             {tableData && tableData.length > 0 ? Object.keys(tableData[0]).map(
@@ -54,7 +58,9 @@ export default function Home() {
                       className="font-blue-500 hover:underline"
                       href={item.html_Url}>{item.html_Url}</a>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{item.description}</td>
+                  <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">
+                    {item.description ? `${item.description.slice(0, 30)}...` : ''}
+                  </td>
                   <td className="whitespace-nowrap px-3 py-4 text-md text-gray-500">{item.default_Branch}</td>
                 </tr>
               )
@@ -62,6 +68,7 @@ export default function Home() {
           ) : <tr><td>No data</td></tr>}
         </tbody>
       </table>
+      
     </main>
   )
 }
