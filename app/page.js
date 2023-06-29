@@ -1,5 +1,12 @@
 "use client";
 import { useState, useEffect } from 'react';
+import { 
+  useReactTable, 
+  createColumnHelper,
+  flexRender, 
+  getCoreRowModel, 
+  getPaginationRowModel
+} from "@tanstack/react-table";
 
 const callAPI = async () => {
   const res = await fetch('https://localhost:32770/api/GitHub/GitHub');
@@ -11,21 +18,114 @@ const callAPI = async () => {
 
 export default function Home() {
   const [tableData, setTableData] = useState([]);
-
-
+  
   useEffect(async () => {
     const data = await callAPI();
     setTableData(data);
   }, []);
+
+  const columnHelper = createColumnHelper();
+  const columns = [
+    // columnHelper.accessor('id', {
+    //   header: () => <h2>ID</h2>,
+    //   cell: ({ row, getValue }) => {
+    //     const styles = '';
+    //     return (<span className={`${styles}`}>{getValue()}</span>)
+    //   },
+    // }),
+    columnHelper.accessor('name', {
+      header: () => <h2>Name</h2>,
+      cell: ({ row, getValue }) => {
+        const styles = '';
+        return (<span className={`${styles}`}>{getValue()}</span>)
+      },
+    }),
+    columnHelper.accessor('private', {
+      header: () => <h2>Private</h2>,
+      cell: ({ row, getValue }) => {
+        const styles = '';
+        return (<span className={`${styles}`}>{getValue()}</span>)
+      },
+    }),
+    columnHelper.accessor('html_Url', {
+      header: () => <h2>HTML URL</h2>,
+      cell: ({ row, getValue }) => {
+        const styles = '';
+        return (<span className={`${styles}`}>{getValue()}</span>)
+      },
+    }),
+    columnHelper.accessor('description', {
+      header: () => <h2>Description</h2>,
+      cell: ({ row, getValue }) => {
+        const styles = '';
+        const value = getValue();
+        return (<span className={`${styles}`}>{value && value!== undefined ? `${value.slice(0, 30)}...` : ''}</span>)
+      },
+    }),
+    columnHelper.accessor('default_Branch', {
+      header: () => <h2>Default Branch</h2>,
+      cell: ({ row, getValue }) => {
+        const styles = '';
+        return (<span className={`${styles}`}>{getValue()}</span>)
+      },
+    }),
+  ];
+  const table = useReactTable({
+    columns,
+    data: (tableData && tableData.length > 0) ? tableData : [],
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+        pagination: {
+            pageSize: 30,
+        },
+    },
+});
   
 
   return (
     <main className="flex items-center justify-center">
-      {/* <button onClick={callAPI}>Call API</button> */}
       
       {/* <h1 className="text-2xl font-bold text-center">GitHub Inventory</h1> */}
+
+      <table className="overflow-x-auto min-w-full divide-y divide-gray-300">
+        <thead className="bg-gray-50">
+          {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id} className="h-40">
+                  {headerGroup.headers.map((header) => (
+                      // <th key={header.id} className="text-left text-slate-900">
+                      <th key={header.id} className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                          {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </th>
+                  ))}
+              </tr>
+          ))}
+        </thead>
+        <tbody className="divide-y divide-gray-200">
+          {table.getRowModel().rows.map((row, r_idx) => (
+              <tr key={row.id} className="leading-4 text-sm">
+                  {row.getVisibleCells().map(cell => (
+                      <td key={cell.id} className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                  ))}
+              </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          {table.getFooterGroups().map((footerGroup) => (
+              <tr key={footerGroup.id}>
+                  {footerGroup.headers.map(header => (
+                      <th key={header.id} className="text-left text-gray-500 font-normal antialiased">
+                          {header.isPlaceholder ? null : flexRender(header.column.columnDef.footer, header.getContext())}
+                      </th>
+                  ))}
+              </tr>
+          ))}
+        </tfoot>
+      </table>
       
-      <table className="divide-y divide-gray-300">
+      {/* <table className="divide-y divide-gray-300">
         <thead>
           <tr>
             {tableData && tableData.length > 0 ? Object.keys(tableData[0]).map(
@@ -67,7 +167,7 @@ export default function Home() {
             }
           ) : <tr><td>No data</td></tr>}
         </tbody>
-      </table>
+      </table> */}
       
     </main>
   )

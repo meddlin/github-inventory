@@ -13,6 +13,7 @@
     "cu-test": "cucumber-js"
   },
   "dependencies": {
+    "@tanstack/react-table": "^8.9.3",
     "autoprefixer": "10.4.14",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.6",
