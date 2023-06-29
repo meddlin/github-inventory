@@ -7,6 +7,12 @@ import {
   getCoreRowModel, 
   getPaginationRowModel
 } from "@tanstack/react-table";
+import { 
+  ViewDetailModal, 
+  ViewDetailModalOpenButton, 
+  ViewDetailModalDismissButton, 
+  ViewDetailModalContents
+} from '@/components/view-detail-modal';
 
 const callAPI = async () => {
   const res = await fetch('https://localhost:32770/api/GitHub/GitHub');
@@ -19,9 +25,11 @@ const callAPI = async () => {
 export default function Home() {
   const [tableData, setTableData] = useState([]);
   
-  useEffect(async () => {
-    const data = await callAPI();
-    setTableData(data);
+  useEffect(() => {
+    (async () => {
+      const data = await callAPI();
+      setTableData(data);
+    })();
   }, []);
 
   const columnHelper = createColumnHelper();
@@ -33,6 +41,35 @@ export default function Home() {
     //     return (<span className={`${styles}`}>{getValue()}</span>)
     //   },
     // }),
+    columnHelper.accessor('view-detail', {
+      header: () => <></>,
+      cell: ({ row, getValue }) => {
+        return (
+          <>
+            <ViewDetailModal>
+              <ViewDetailModalOpenButton>
+                <button>Detail</button>
+              </ViewDetailModalOpenButton>
+              <ViewDetailModalContents>
+                <div className="p-b-2">
+                  <span>ID: </span>{row.original.id}
+                </div>
+                <div className="p-b-2">
+                  <span>Name: </span>{row.original.name}
+                </div>
+                <div className="p-b-2">
+                  <span>License: </span>{JSON.stringify(row.original.license)}
+                </div>
+
+                <ViewDetailModalDismissButton>
+                  <button>Close</button>
+                </ViewDetailModalDismissButton>
+              </ViewDetailModalContents>
+            </ViewDetailModal>
+          </>
+        )
+      },
+    }),
     columnHelper.accessor('name', {
       header: () => <h2>Name</h2>,
       cell: ({ row, getValue }) => {
@@ -69,6 +106,20 @@ export default function Home() {
         return (<span className={`${styles}`}>{getValue()}</span>)
       },
     }),
+    columnHelper.accessor('has_license', {
+      header: () => <h2>Has License</h2>,
+      cell: ({ row, getValue }) => {
+        const styles = '';
+        const licenseValue = (row.original.license && 
+                        row.original.license !== undefined && 
+                          row.original.license.hasOwnProperty('name')) ? row.original.license.name : '';
+        return (
+          <span className={`${styles}`}>
+            {licenseValue}
+          </span>
+        )
+      }
+    })
   ];
   const table = useReactTable({
     columns,
