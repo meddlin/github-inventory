@@ -6,7 +6,7 @@ const ViewDetailDisplay = ({ data }) => {
     const [ownerIsOpen, setOwnerIsOpen] = useState(false);
 
     return (
-            <>
+            <div className="w-80">
                 <div className="p-b-2">
                     <span>ID: </span>{data.id}
                 </div>
@@ -26,37 +26,39 @@ const ViewDetailDisplay = ({ data }) => {
                     <p>More to show</p>
                 </div> */}
 
-                <Disclosure>
-                    <Disclosure.Button className="py-2">
-                        Show Owner information
-                    </Disclosure.Button>
-                    <Disclosure.Panel className="text-gray-500">
-                        <div className="p-l-2">
-                            <div>login: {data.owner.login}</div>
-                            <div>id: {data.owner.id}</div>
-                            <div>node_Id: {data.owner.node_Id}</div>
-                            <div>avatar_Url: {data.owner.avatar_Url}</div>
-                            <div>gravatar_Id: {data.owner.gravatar_Id}</div>
-                            <div>url: {data.owner.url}</div>
-                            <div>followers_Url: {data.owner.followers_Url}</div>
-                            <div>following_Url: {data.owner.following_Url}</div>
-                            <div>gists_Url: {data.owner.gists_Url}</div>
-                            <div>starred_Url: {data.owner.starred_Url}</div>
-                            <div>subscriptions_Url: {data.owner.subscriptions_Url}</div>
-                            <div>organizations_Url: {data.owner.organizations_Url}</div>
-                            <div>repos_Url: {data.owner.repos_Url}</div>
-                            <div>events_Url: {data.owner.events_Url}</div>
-                            <div>received_Events_Url: {data.owner.received_Events_Url}</div>
-                            <div>type: {data.owner.type}</div>
-                            <div>site_Admin: {data.owner.site_Admin}</div>
-                        </div>
-                    </Disclosure.Panel>
-                </Disclosure>
+                <div>
+                    <Disclosure>
+                        <Disclosure.Button className="py-2">
+                            Show Owner information
+                        </Disclosure.Button>
+                        <Disclosure.Panel className="text-gray-500 max-h-64 overflow-x-auto overflow-y-auto">
+                            <div className="p-l-2">
+                                <div>login: {data.owner.login}</div>
+                                <div>id: {data.owner.id}</div>
+                                <div>node_Id: {data.owner.node_Id}</div>
+                                <div>avatar_Url: {data.owner.avatar_Url}</div>
+                                <div>gravatar_Id: {data.owner.gravatar_Id}</div>
+                                <div>url: {data.owner.url}</div>
+                                <div>followers_Url: {data.owner.followers_Url}</div>
+                                <div>following_Url: {data.owner.following_Url}</div>
+                                <div>gists_Url: {data.owner.gists_Url}</div>
+                                <div>starred_Url: {data.owner.starred_Url}</div>
+                                <div>subscriptions_Url: {data.owner.subscriptions_Url}</div>
+                                <div>organizations_Url: {data.owner.organizations_Url}</div>
+                                <div>repos_Url: {data.owner.repos_Url}</div>
+                                <div>events_Url: {data.owner.events_Url}</div>
+                                <div>received_Events_Url: {data.owner.received_Events_Url}</div>
+                                <div>type: {data.owner.type}</div>
+                                <div>site_Admin: {data.owner.site_Admin}</div>
+                            </div>
+                        </Disclosure.Panel>
+                    </Disclosure>
+                </div>
 
                 <div className="p-b-2">
                     <span>License: </span>{JSON.stringify(data.license)}
                 </div>
-            </>
+            </div>
     );
 };
 
