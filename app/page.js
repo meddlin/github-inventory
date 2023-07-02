@@ -13,6 +13,7 @@ import {
   ViewDetailModalDismissButton, 
   ViewDetailModalContents
 } from '@/components/view-detail-modal';
+import ViewDetailDisplay from '@/components/view-detail-display';
 
 const callAPI = async () => {
   const res = await fetch('https://localhost:32770/api/GitHub/GitHub');
@@ -51,15 +52,7 @@ export default function Home() {
                 <button>Detail</button>
               </ViewDetailModalOpenButton>
               <ViewDetailModalContents>
-                <div className="p-b-2">
-                  <span>ID: </span>{row.original.id}
-                </div>
-                <div className="p-b-2">
-                  <span>Name: </span>{row.original.name}
-                </div>
-                <div className="p-b-2">
-                  <span>License: </span>{JSON.stringify(row.original.license)}
-                </div>
+                <ViewDetailDisplay data={row.original} />
 
                 <ViewDetailModalDismissButton>
                   <button>Close</button>
@@ -140,7 +133,7 @@ export default function Home() {
       {/* <h1 className="text-2xl font-bold text-center">GitHub Inventory</h1> */}
 
       <table className="overflow-x-auto min-w-full divide-y divide-gray-300">
-        <thead className="bg-gray-50">
+        <thead className="bg-gray-200">
           {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id} className="h-40">
                   {headerGroup.headers.map((header) => (
