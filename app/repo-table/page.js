@@ -65,8 +65,20 @@ const RepoTablePage = () => {
                 return (<span className="font-semibold">{getValue()}</span>)
             },
         }),
+        columnHelper.accessor('owner.login', {
+            header: () => <h2>Owner</h2>,
+            cell: ({ row, getValue }) => {
+                const styles = '';
+                const htmlUrl = row.original.owner.html_Url;
+                return (
+                    <a href={htmlUrl}>
+                        <span className="underline decoration-solid hover:decoration-dashed">{getValue()}</span>
+                    </a>
+                )
+            },
+        }),
         columnHelper.accessor('private', {
-            header: () => <h2>Private</h2>,
+            header: () => <h2>Type</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
                 const value = getValue();
@@ -74,9 +86,10 @@ const RepoTablePage = () => {
             },
         }),
         columnHelper.accessor('html_Url', {
-            header: () => <h2>HTML URL</h2>,
+            header: () => <h2>URL</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
+                // TODO : Security - make sure this is a valid URL pointing at the GitHub repo
                 return (
                     <a href={`${getValue()}`} className="underline decoration-solid hover:decoration-dashed">{getValue()}</a>
                 )
@@ -90,8 +103,15 @@ const RepoTablePage = () => {
                 return (<span className={`${styles}`}>{value && value!== undefined ? `${value.slice(0, 30)}...` : ''}</span>)
             },
         }),
+        columnHelper.accessor('language', {
+            header: () => <h2>Language</h2>,
+            cell: ({ row, getValue }) => {
+                const styles = '';
+                return (<span className={`${styles}`}>{getValue()}</span>)
+            },
+        }),
         columnHelper.accessor('default_Branch', {
-            header: () => <h2>Default Branch</h2>,
+            header: () => (<h2>Default Branch</h2>),
             cell: ({ row, getValue }) => {
                 const styles = '';
                 return (<span className={`${styles}`}>{getValue()}</span>)
