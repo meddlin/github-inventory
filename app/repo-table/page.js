@@ -18,7 +18,7 @@ import { CheckIcon } from '@heroicons/react/20/solid';
 import ViewDetailDisplay from '@/components/view-detail-display';
 
 const callAPI = async () => {
-    const res = await fetch('https://localhost:32770/api/GitHub/GitHub');
+    const res = await fetch('https://localhost:32768/api/GitHub/GetRepos');
     const data = await res.json();
     if (res.status !== 200) throw Error(body.message);
     
