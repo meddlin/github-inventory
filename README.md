@@ -1,8 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# GitHub Inventory
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+GitHub Inventory is a project to make managing GitHub-based projects easier. 
+
+Key features are (***intended to be***): table list, filtering, sorting, license checks, actions checks, basic security coverage reporting.
+
 ## Getting Started
+
+> Note: This inventory is dependent on GitHub Consumer API: [https://github.com/meddlin/github-consumer](https://github.com/meddlin/github-consumer). This API needs to be running locally for this UI to operate correctly.
 
 First, run the development server:
 
@@ -20,17 +26,15 @@ You can start editing the page by modifying `app/page.js`. The page auto-updates
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## Inspiration/Motivation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A "query-able SDLC".
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+After observing efforts around modernizing SDLC processes and building DevSecOps tooling, I started 
+considering what if it was possible to query an SDLC similar to how analysts can query data lakes. At the least,
+we would need to have an inventory of code repos. From there, we would need to pull metrics from various CI/CD
+tooling processes.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+All of this is very possible. However, this project focuses on building a PoC based on the GitHub platform
+instead of trying to incorporate every permutation of common CI/CD integrations (e.g. Jenkins, Terraform, etc.).
