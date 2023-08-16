@@ -66,7 +66,7 @@ const RepoTablePage = () => {
             },
         }),
         columnHelper.accessor('private', {
-            header: () => <h2>Private</h2>,
+            header: () => <h2>Type</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
                 const value = getValue();
@@ -74,7 +74,7 @@ const RepoTablePage = () => {
             },
         }),
         columnHelper.accessor('html_Url', {
-            header: () => <h2>HTML URL</h2>,
+            header: () => <h2>URL</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
                 return (
