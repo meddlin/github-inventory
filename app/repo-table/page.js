@@ -14,6 +14,7 @@ import {
     ViewDetailModalDismissButton, 
     ViewDetailModalContents
 } from '@/components/view-detail-modal';
+import { CheckIcon } from '@heroicons/react/20/solid';
 import ViewDetailDisplay from '@/components/view-detail-display';
 
 const callAPI = async () => {
@@ -100,11 +101,19 @@ const RepoTablePage = () => {
             header: () => <h2>Has License</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
+                // Show if license is present, not the actual license name
                 const licenseValue = (row.original.license && 
-                    row.original.license !== undefined && 
-                    row.original.license.hasOwnProperty('name')) ? row.original.license.name : '';
+                                        row.original.license !== undefined && 
+                                        row.original.license.hasOwnProperty('name')) ? 
+                                            true : false;
 
-                    return (<span className={`${styles}`}>{licenseValue}</span>);
+                return (
+                    <span className={`${styles}`}>
+                        {licenseValue ? (
+                            <CheckIcon className="w-5 h-5 text-green-500" />                         
+                            ) : ''}
+                    </span>
+                );
             }
         })
     ];
