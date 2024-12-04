@@ -148,26 +148,39 @@ export function RepoDetail({ repoData }: RepoDetailProps) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>README</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-            </div>
-          ) : readme ? (
-            <div className="prose dark:prose-invert max-w-none">
-              <Markdown>{readme}</Markdown>
-            </div>
-          ) : (
-            <p>No README found for this repository.</p>
-          )}
-        </CardContent>
-      </Card>
+      <div className="flex flex-row justify-start space-x-12">
+        <div className="max-w-[65%]">
+          <Card>
+            <CardHeader>
+              <CardTitle>README</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {isLoading ? (
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                </div>
+              ) : readme ? (
+                <div className="prose dark:prose-invert max-w-none">
+                  <Markdown>{readme}</Markdown>
+                </div>
+              ) : (
+                <p>No README found for this repository.</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+        <div className="max-w-[35%]">
+          <h2 className="mb-6 text-lg font-bold">Extras to enable</h2>
+          <ul>
+            <li>Has license?</li>
+            <li>Has codeowners?</li>
+            <li>Has branch protection?</li>
+            <li>Has GitHub Actions?</li>
+          </ul>
+        </div>
+      </div>
     </div>
   )
 }
