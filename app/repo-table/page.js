@@ -154,7 +154,18 @@ const RepoTablePage = () => {
                 );
             },
             footer: 'Has License'
-        })
+        }),
+        columnHelper.accessor('more_info', {
+            header: () => <h2>More Info</h2>,
+            cell: ({ row, getValue }) => {
+                const styles = '';
+                // TODO : Security - make sure this is a valid URL pointing at the GitHub repo
+                return (
+                    <a href={`/repo/sample`} className="underline decoration-solid hover:decoration-dashed">{'see more...'}</a>
+                )
+            },
+            footer: ''
+        }),
     ];
 
     const table = useReactTable({
