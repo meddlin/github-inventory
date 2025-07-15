@@ -1,39 +1,51 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { 
-    useReactTable, 
+
+import {
+    Table,
+    TableBody,
+    TableCaption,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+
+import {
+    useReactTable,
     createColumnHelper,
-    flexRender, 
-    getCoreRowModel, 
+    flexRender,
+    getCoreRowModel,
     getPaginationRowModel
 } from "@tanstack/react-table";
-import { 
-    ViewDetailModal, 
-    ViewDetailModalOpenButton, 
-    ViewDetailModalDismissButton, 
+import {
+    ViewDetailModal,
+    ViewDetailModalOpenButton,
+    ViewDetailModalDismissButton,
     ViewDetailModalContents
 } from '@/components/view-detail-modal';
+import { CheckIcon } from '@heroicons/react/20/solid';
 import ViewDetailDisplay from '@/components/view-detail-display';
 
 const callAPI = async () => {
-    const res = await fetch('https://localhost:32770/api/GitHub/GitHub');
+    const res = await fetch('https://localhost:7080/api/GitHub/GetRepos');
     const data = await res.json();
     if (res.status !== 200) throw Error(body.message);
-    
+
     return data;
 };
 
 const RepoTablePage = () => {
     const [tableData, setTableData] = useState([]);
-    
+
     useEffect(() => {
         (async () => {
             const data = await callAPI();
             setTableData(data);
         })();
     }, []);
-    
+
     const columnHelper = createColumnHelper();
     const columns = [
         columnHelper.accessor('view-detail', {
@@ -47,7 +59,7 @@ const RepoTablePage = () => {
                             </ViewDetailModalOpenButton>
                             <ViewDetailModalContents>
                                 <ViewDetailDisplay data={row.original} />
-                                
+
                                 <ViewDetailModalDismissButton>
                                     <button>Close</button>
                                 </ViewDetailModalDismissButton>
@@ -63,50 +75,97 @@ const RepoTablePage = () => {
                 const styles = '';
                 return (<span className="font-semibold">{getValue()}</span>)
             },
+            footer: 'Name'
+        }),
+        columnHelper.accessor('owner.login', {
+            header: () => <h2>Owner</h2>,
+            cell: ({ row, getValue }) => {
+                const styles = '';
+                const htmlUrl = row.original.owner.html_Url;
+                return (
+                    <a href={htmlUrl}>
+                        <span className="underline decoration-solid hover:decoration-dashed">{getValue()}</span>
+                    </a>
+                )
+            },
+            footer: 'Owner Login'
         }),
         columnHelper.accessor('private', {
-            header: () => <h2>Private</h2>,
+            header: () => <h2>Type</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
                 const value = getValue();
-                return (<span className={`${styles}`}>{ value ? 'private' : 'public' }</span>)
+                return (<span className={`${styles}`}>{value ? 'private' : 'public'}</span>)
             },
+            footer: 'Private'
         }),
         columnHelper.accessor('html_Url', {
-            header: () => <h2>HTML URL</h2>,
+            header: () => <h2>URL</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
+                // TODO : Security - make sure this is a valid URL pointing at the GitHub repo
                 return (
                     <a href={`${getValue()}`} className="underline decoration-solid hover:decoration-dashed">{getValue()}</a>
                 )
             },
+            footer: 'URL'
         }),
         columnHelper.accessor('description', {
             header: () => <h2>Description</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
                 const value = getValue();
-                return (<span className={`${styles}`}>{value && value!== undefined ? `${value.slice(0, 30)}...` : ''}</span>)
+                return (<span className={`${styles}`}>{value && value !== undefined ? `${value.slice(0, 30)}...` : ''}</span>)
             },
+            footer: 'Description'
         }),
-        columnHelper.accessor('default_Branch', {
-            header: () => <h2>Default Branch</h2>,
+        columnHelper.accessor('language', {
+            header: () => <h2>Language</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
                 return (<span className={`${styles}`}>{getValue()}</span>)
             },
+            footer: 'Language'
+        }),
+        columnHelper.accessor('default_Branch', {
+            header: () => (<h2>Default Branch</h2>),
+            cell: ({ row, getValue }) => {
+                const styles = '';
+                return (<span className={`${styles}`}>{getValue()}</span>)
+            },
+            footer: 'Default Branch'
         }),
         columnHelper.accessor('has_license', {
             header: () => <h2>Has License</h2>,
             cell: ({ row, getValue }) => {
                 const styles = '';
-                const licenseValue = (row.original.license && 
-                    row.original.license !== undefined && 
-                    row.original.license.hasOwnProperty('name')) ? row.original.license.name : '';
+                // Show if license is present, not the actual license name
+                const licenseValue = (row.original.license &&
+                    row.original.license !== undefined &&
+                    row.original.license.hasOwnProperty('name')) ?
+                    true : false;
 
-                    return (<span className={`${styles}`}>{licenseValue}</span>);
-            }
-        })
+                return (
+                    <span className={`${styles}`}>
+                        {licenseValue ? (
+                            <CheckIcon className="w-5 h-5 text-green-500" />
+                        ) : ''}
+                    </span>
+                );
+            },
+            footer: 'Has License'
+        }),
+        columnHelper.accessor('more_info', {
+            header: () => <h2>More Info</h2>,
+            cell: ({ row, getValue }) => {
+                const styles = '';
+                // TODO : Security - make sure this is a valid URL pointing at the GitHub repo
+                return (
+                    <a href={`/repo/sample`} className="underline decoration-solid hover:decoration-dashed">{'see more...'}</a>
+                )
+            },
+            footer: ''
+        }),
     ];
 
     const table = useReactTable({
@@ -123,29 +182,15 @@ const RepoTablePage = () => {
 
     return (
         <>
+
             <div className="px-4 sm:px-6 lg:px-8">
-                <div className="sm:flex sm:items-center">
-                    <div className="sm:flex-auto">
-                        <h1 className="text-base font-semibold leading-6 text-gray-900">Repo Table</h1>
-                        <p className="mt-2 text-sm text-gray-700">
-                            A table of repos from GitHub
-                        </p>
-                    </div>
-                    <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
-                        <button
-                            type="button"
-                            className="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        >
-                            Export
-                        </button>
-                    </div>
-                </div>
 
                 <div className="mt-8 flow-root">
                     <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
-                            <table className="min-w-full divide-y divide-gray-900">
-                                <thead>
+                            <Table> {/* className="min-w-full divide-y divide-gray-900" */}
+                                <TableCaption>A list of GitHub repos</TableCaption>
+                                <TableHeader>
                                     {table.getHeaderGroups().map((headerGroup) => (
                                         <tr key={headerGroup.id} className="h-20">
                                             {headerGroup.headers.map((header) => (
@@ -157,18 +202,18 @@ const RepoTablePage = () => {
                                             ))}
                                         </tr>
                                     ))}
-                                </thead>
-                                <tbody className="divide-y divide-gray-200 bg-white">
+                                </TableHeader>
+                                <TableBody className="divide-y divide-gray-200 bg-white">
                                     {table.getRowModel().rows.map((row, r_idx) => (
-                                        <tr key={row.id} className="leading-4 text-sm hover:bg-gray-100">
+                                        <TableRow key={row.id}> {/* className="leading-4 text-sm hover:bg-gray-100" */}
                                             {row.getVisibleCells().map(cell => (
-                                                <td key={cell.id} className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
+                                                <TableCell key={cell.id}> {/* className="whitespace-nowrap px-2 py-2 text-sm text-gray-900" */}
                                                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                                </td>
+                                                </TableCell>
                                             ))}
-                                        </tr>
+                                        </TableRow>
                                     ))}
-                                </tbody>
+                                </TableBody>
                                 <tfoot>
                                     {table.getFooterGroups().map((footerGroup) => (
                                         <tr key={footerGroup.id}>
@@ -180,7 +225,7 @@ const RepoTablePage = () => {
                                         </tr>
                                     ))}
                                 </tfoot>
-                            </table>
+                            </Table>
                         </div>
                     </div>
                 </div>
