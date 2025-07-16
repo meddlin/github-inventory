@@ -1,5 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+*/bin
+*/include
+*/lib
+*pyvenv.cfg
+
+
 # dependencies
 /node_modules
 /.pnp
@@ -33,3 +39,4 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env
