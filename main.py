@@ -1,8 +1,8 @@
 
 import argparse
 import textwrap
-import github.repos as gh_repos
 from dotenv import load_dotenv
+import github.repos as gh_repos
 
 def start_repl():
     print("Welcome to the REPL")
@@ -38,6 +38,7 @@ def main():
 
     repo_parser = gh_subparser.add_parser('repo', help = 'GitHub repo commands')
     repo_parser.add_argument('--name', type = str, help = 'Name of repository')
+    repo_parser.add_argument('--owner', type = str, help = 'Owner of repository')
     repo_parser.add_argument('--report', type = str, help = 'Type of report to execute')
     repo_parser.add_argument('--user', type = str, help = 'GitHub username')
     repo_parser.add_argument('--csv', action = argparse.BooleanOptionalAction)
