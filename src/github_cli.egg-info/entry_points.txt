@@ -1,0 +1,2 @@
+[console_scripts]
+github = github_cli.main:main

@@ -8,9 +8,9 @@ from typing import Dict, List, Any
 import requests
 from rich.console import Console
 from rich.table import Table
-from github.gh_actions import __request_repo_workflows
-from github.models.workflow import GitHubWorkflow
-from database.manager import DatabaseManager
+from github_cli.gh_actions import __request_repo_workflows
+from github_cli.models.workflow import GitHubWorkflow
+from github_cli.database.manager import DatabaseManager
 
 def __request_repos_for_user(username: str) -> List[Any]:
     """Get repos for a GitHub user
