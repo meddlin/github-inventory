@@ -50,13 +50,19 @@ def __request_repos_for_user(username: str) -> List[Any]:
     return repos
 
 def insert_repo(repo):
+    """Insert a repo into the database.
+
+    Args:
+        repo (_type_): _description_
+    """
+
     repo_id = str(uuid.uuid4())
     with DatabaseManager() as db:
         db.execute('''
-                   INSERT INTO repositories (id, name, url)
-                   VALUES (?, ?, ?)
-                   ''', (repo_id, repo['name'], repo['html_url'])
-                )
+            INSERT INTO repositories (id, name, url)
+            VALUES (?, ?, ?)
+            ''', (repo_id, repo['name'], repo['html_url'])
+        )
 
 def user_repos_report(username: str):
     """Handle reporting GitHub repos for user
@@ -85,10 +91,14 @@ def user_repos_report(username: str):
     console.print(table)
 
 def handle_args(args):
+    """Handle args for repo commands
 
+    Args:
+        args (_type_): _description_
+    """
     if args.report == 'list':
         user_repos_report(args.user)
-    
+
     if args.report == 'workflows':
         wfs = __request_repo_workflows(owner = 'meddlin', repo = 'github-inventory')
         for w in wfs:
