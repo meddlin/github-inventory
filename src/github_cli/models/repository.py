@@ -1,5 +1,5 @@
 from typing import Any, List
-from github.models.owner import GitHubOwner
+from github_cli.models.owner import GitHubOwner
 
 class GitHubRepository:
     def __init__(
