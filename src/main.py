@@ -1,8 +1,10 @@
+"""Main module
+"""
 
 import argparse
 import textwrap
 from dotenv import load_dotenv
-import github.repos as gh_repos
+from github_cli import repos
 
 def start_repl():
     print("Welcome to the REPL")
@@ -42,7 +44,7 @@ def main():
     repo_parser.add_argument('--report', type = str, help = 'Type of report to execute')
     repo_parser.add_argument('--user', type = str, help = 'GitHub username')
     repo_parser.add_argument('--csv', action = argparse.BooleanOptionalAction)
-    repo_parser.set_defaults(func = gh_repos.handle_args)
+    repo_parser.set_defaults(func = repos.handle_args)
 
     args = parser.parse_args()
     if hasattr(args, 'func'):
