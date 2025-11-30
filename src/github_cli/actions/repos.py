@@ -8,7 +8,7 @@ from typing import Dict, List, Any
 import requests
 from rich.console import Console
 from rich.table import Table
-from github_cli.gh_actions import __request_repo_workflows
+from github_cli.actions.gh_actions import __request_repo_workflows
 from github_cli.models.workflow import GitHubWorkflow
 from github_cli.database.manager import DatabaseManager
 
@@ -90,17 +90,21 @@ def user_repos_report(username: str):
     # Render table
     console.print(table)
 
-def handle_args(args):
-    """Handle args for repo commands
+def handle_repos(username: str):
+    data = __request_repos_for_user(username=username)
+    print(data)
 
-    Args:
-        args (_type_): _description_
-    """
-    if args.report == 'list':
-        user_repos_report(args.user)
+# def handle_args(args):
+#     """Handle args for repo commands
 
-    if args.report == 'workflows':
-        wfs = __request_repo_workflows(owner = 'meddlin', repo = 'github-inventory')
-        for w in wfs:
-            workflow = GitHubWorkflow.from_dict(w)
-            print(workflow.name)
+#     Args:
+#         args (_type_): _description_
+#     """
+#     if args.report == 'list':
+#         user_repos_report(args.user)
+
+#     if args.report == 'workflows':
+#         wfs = __request_repo_workflows(owner = 'meddlin', repo = 'github-inventory')
+#         for w in wfs:
+#             workflow = GitHubWorkflow.from_dict(w)
+#             print(workflow.name)
