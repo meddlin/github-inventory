@@ -1,8 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+__pycache__/
 
 # virtual environment
 venv/*
 venv
+*.pyc
+*.cpython
 
 # Ignore sqlite database files
 *.db
