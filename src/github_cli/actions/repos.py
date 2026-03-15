@@ -91,7 +91,7 @@ def user_repos_report(username: str):
     # Render table
     console.print(table)
 
-def handle_repos(username: str):
+def handle_list_repos(username: str):
     repo_data = __request_repos_for_user(username=username)
     for repo in repo_data:
         gh_repo = GitHubRepository(
@@ -102,3 +102,18 @@ def handle_repos(username: str):
         )
         print(gh_repo.url)
     print('all repos processed...')
+
+def handle_repo_import(username: str = "meddlin"):
+    """Handle repo import"""
+
+    repo_data = __request_repos_for_user(username=username)
+    for repo in repo_data:
+        gh_repo = GitHubRepository(
+            id=repo['id'],
+            name=repo['name'],
+            node_id=repo['node_id'],
+            url=repo['url'],
+            language=repo['language']
+        )
+        print(gh_repo.name)
+        # insert_repo(gh_repo)
